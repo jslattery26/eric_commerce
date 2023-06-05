@@ -2,12 +2,12 @@
   <div>
     <DesktopNav />
     <br />
-    <div class="text-center" v-if="$store.state.cart.cart.length == 0">
+    <div class="text-center" v-if="cart.total_items == 0">
       <v-img class="d-block mx-auto" src="/emptycart.svg" width="500"></v-img>
       <p>No Items Just Yet</p>
     </div>
     <v-container v-else>
-      <div class="mb-3" v-if="$store.state.cart.cart.length > 0">
+      <div class="mb-3" v-if="cart.total_items > 0">
         <v-btn nuxt to="/cart" min-width="150" min-height="45" depressed
           >Back</v-btn
         >
@@ -111,6 +111,13 @@
 import FM from "~/mixins/FormMixinx";
 export default {
   mixins: [FM],
+  async asyncData({ $commerce }) {
+    const cart = await $commerce.cart.retrieve();
+    console.log(cart);
+    return {
+      cart,
+    };
+  },
   data() {
     return {
       email: null,

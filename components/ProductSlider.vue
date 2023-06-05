@@ -8,7 +8,7 @@
         width="300"
         class="el ma-2 mb-5 mr-5"
       >
-        <v-img :src="p.image" height="300">
+        <v-img :src="p.image.url" height="300">
           <template #placeholder>
             <v-row class="fill-height" justify="center" align="center">
               <v-progress-circular

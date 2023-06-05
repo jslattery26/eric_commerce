@@ -1,8 +1,18 @@
 <template>
-  <div>
-    <DesktopNav />
-    <HomeCarousel :sale_items="sale_items" />
-    <br /><br />
+  <div id="container">
+    <!-- <DesktopNav /> -->
+    <!-- <HomeCarousel :sale_items="sale_items" /> -->
+
+    <v-img id="background" src="/smoker.png" />
+    <v-img id="overlayImage" v-if="active" src="/overlay.png" />
+
+    <div
+      id="overlay"
+      @mouseover="mouseOver()"
+      @mouseleave="active = false"
+      @click="$router.push(`/home`)"
+    ></div>
+    <!-- <br /><br />
     <v-container>
       <h1 class="text-md-h4 text-h6">Check these out 🔥</h1>
       <br />
@@ -12,7 +22,7 @@
     </v-container>
     <br /><br />
     <Footer />
-    <ScrollTop />
+    <ScrollTop /> -->
   </div>
 </template>
 
@@ -24,8 +34,16 @@ export default {
       .fetch();
     this.products = await this.$content("products").fetch();
   },
+  methods: {
+    mouseOver() {
+      this.active = true;
+      var audio = new Audio("/quack.mov ");
+      audio.play();
+    },
+  },
   data() {
     return {
+      active: false,
       products: null,
       sale_items: null,
     };
@@ -33,4 +51,33 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+#background {
+  position: relative;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+#overlayImage {
+  position: absolute;
+  height: 100vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#overlay {
+  position: fixed;
+  height: 50%;
+  width: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+</style>

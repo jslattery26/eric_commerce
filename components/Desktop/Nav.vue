@@ -12,7 +12,7 @@
       <v-toolbar-title
         @click="$router.push('/')"
         class="text-md-h5 font-weight-bold pointer"
-        >FreeCommerce</v-toolbar-title
+        >mellow yellow</v-toolbar-title
       >
       <v-spacer />
 

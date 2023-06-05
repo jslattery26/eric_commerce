@@ -12,19 +12,18 @@
               clearable
               placeholder="Search"
             ></v-text-field>
-            <v-list
-              v-if="$vuetify.breakpoint.mdAndUp"
-              color="transparent"
-              subheader
-            >
+            <v-list color="transparent" subheader>
               <v-subheader>Categories</v-subheader>
               <v-list-item
                 link
                 v-for="(c, i) in categories"
                 :key="`category${i}`"
+                @click="selectCategory(c)"
               >
-                <v-list-item-avatar>
-                  <v-img :src="c.image"></v-img>
+                <v-list-item-avatar color="secondary">
+                  <v-icon size="large" color="primary">
+                    {{ c.name == "Samples" ? "mdi-waveform" : "mdi-music" }}
+                  </v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title>
@@ -42,11 +41,11 @@
                 <v-col cols="12" md="6">
                   <v-card
                     nuxt
-                    :to="`/products/${p.id}`"
+                    :to="`/products/${p.permalink}`"
                     color="surface"
                     class="el ma-2 mb-5 mr-5"
                   >
-                    <v-img :src="p.image" height="300">
+                    <v-img :src="p.image.url" height="300">
                       <template #placeholder>
                         <v-row
                           class="fill-height"
@@ -66,7 +65,7 @@
                       p.name
                     }}</v-card-title>
                     <v-card-subtitle class="primary--text pb-3">
-                      ${{ p.price }}
+                      {{ p.price.formatted_with_symbol }}
                     </v-card-subtitle>
                     <v-card-text>
                       <v-chip
@@ -96,31 +95,51 @@
 
 <script>
 export default {
-  async created() {
-    this.products = await this.$content("products").fetch();
-    this.categories = await this.$content("category").fetch();
+  async asyncData({ $commerce }) {
+    const { data: products } = await $commerce.products.list();
+    const { data: categories } = await $commerce.categories.list();
+    const cart = await $commerce.cart.retrieve();
+
+    console.log(products);
+    return {
+      products,
+      categories,
+      cart,
+    };
   },
   data() {
     return {
-      products: null,
-      categories: null,
       search: null,
+      selectedCategory: null,
     };
+  },
+  methods: {
+    selectCategory(c) {
+      this.selectedCategory = c;
+    },
   },
   computed: {
     filteredProducts() {
-      if (!this.products || !this.search) return this.products;
+      if (!this.products || (!this.search && !this.selectedCategory))
+        return this.products;
+      if (this.search != null) {
+        this.selectedCategory = null;
+      }
+      if (this.selectedCategory != null) {
+        return this.products.filter((p) => {
+          p.categories.filter((c) => {});
+          return p.categories.find((c) => c.name == this.selectedCategory.name);
+        });
+      }
       return this.products.filter((p) => {
         const s = this.search.toLowerCase();
         const n = p.name.toLowerCase();
         const price = p.price.toString();
         const sprice = p.salePrice?.toString() || "";
-        const r = p.ratings.toString();
+        // const r = p.ratings.toString();
         return (
-          n.includes(s) ||
-          price.includes(s) ||
-          sprice.includes(s) ||
-          r.includes(s)
+          n.includes(s) || price.includes(s) || sprice.includes(s)
+          // r.includes(s)
         );
       });
     },

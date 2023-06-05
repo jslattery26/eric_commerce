@@ -21,7 +21,7 @@
       </v-row>
     </template>
     <v-carousel-item v-for="(p, i) in sale_items" :key="`saleitem${i}`">
-      <v-img height="100vh" :src="p.image">
+      <v-img height="100vh" :src="p.image.url">
         <v-container class="fill-height">
           <v-row dense align="center">
             <v-col md="7">

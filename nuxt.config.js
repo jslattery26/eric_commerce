@@ -5,7 +5,7 @@ export default {
   ssr: false,
   // For netlify
   generate: {
-    fallback: true
+    fallback: true,
   },
 
   // Target: https://go.nuxtjs.dev/config-target
@@ -31,7 +31,7 @@ export default {
   css: ["@sweetalert2/theme-material-ui", "~/assets/main.css"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ["~/plugins/cart.js"],
+  plugins: ["~/plugins/cart.js", "~/plugins/commerce.js"],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -40,7 +40,6 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/vuetify
     "@nuxtjs/vuetify",
-    "@nuxtjs/ngrok",
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
