@@ -6,13 +6,14 @@
       <v-img class="d-block mx-auto" src="/emptycart.svg" width="500"></v-img>
       <p>No Items Just Yet</p>
     </div>
+
     <v-container>
       <div class="mb-3" v-if="cart.total_items > 0">
         <v-btn
           nuxt
           rounded
-          :disabled="disable"
-          @click="window.open(cart.hosted_checkout_url)"
+          :href="cart.hosted_checkout_url"
+          target="_blank"
           min-width="150"
           min-height="45"
           color="primary"
@@ -82,6 +83,11 @@ export default {
     };
   },
   methods: {
+    goToCheckout(hostedUrl) {
+      this.$router.push({
+        beforeEnter() {},
+      });
+    },
     async increaseCount(c) {
       this.disable = true;
       c.quantity = c.quantity + 1;
