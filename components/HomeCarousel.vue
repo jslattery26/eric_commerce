@@ -20,7 +20,7 @@
         ></v-progress-circular>
       </v-row>
     </template>
-    <v-carousel-item v-for="(p, i) in sale_items" :key="`saleitem${i}`">
+    <v-carousel-item v-for="(p, i) in products" :key="`saleitem${i}`">
       <v-img height="100vh" :src="p.image.url">
         <v-container class="fill-height">
           <v-row dense align="center">
@@ -33,9 +33,19 @@
                   {{ p.name }}
                 </h2>
                 <p class="text-md-h5 text-subtitle-1 primary--text mt-5">
-                  {{ $formatMoney(p.price) }}
+                  {{ p.price.formatted_with_symbol }}
                 </p>
-                <p class="text-md-body-2 mb-7">{{ p.description }}</p>
+                <p class="text-md-body-2 mb-7">{{ productDescription(p) }}</p>
+                <div v-for="(u, i) in productPreviews(p)">
+                  <h5 class="mb-2 ml-2">
+                    {{ u.split("/")[5] }}
+                  </h5>
+                  <AudioPlayer
+                    style="width: 100%"
+                    class="mb-7"
+                    :file="u"
+                  ></AudioPlayer>
+                </div>
                 <v-btn
                   depressed
                   nuxt
@@ -57,7 +67,23 @@
 <script>
 export default {
   props: {
-    sale_items: Array,
+    products: Array,
+  },
+  methods: {
+    productDescription(p) {
+      return p.description
+        .replace(/<\/?[^>]+>/gi, " ")
+        .replace(
+          /(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%.&\/~+#-])/gi,
+          ""
+        );
+    },
+    productPreviews(p) {
+      var urls = p.description.match(
+        /(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%.&\/~+#-])/gi
+      );
+      return urls;
+    },
   },
 };
 </script>

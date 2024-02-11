@@ -5,7 +5,7 @@
       height="80"
       class="el"
       :style="{
-        padding: $vuetify.breakpoint.mdAndUp ? '0px 100px' : '',
+        // padding: $vuetify.breakpoint.mdAndUp ? '0px 100px' : '',
       }"
       app
     >
@@ -19,10 +19,10 @@
       <v-btn nuxt to="/products" class="mr-md-2" icon>
         <v-icon size="20">mdi-store-outline</v-icon>
       </v-btn>
-      <v-badge
-        v-if="$store.state.cart.cart.length > 0"
+      <!-- <v-badge
+        v-if="$store.cart.length > 0"
         overlap
-        :content="`${$store.state.cart.cart.length}`"
+        :content="`${$store.cart.length}`"
       >
         <v-btn nuxt to="/cart" icon>
           <v-icon size="20">mdi-cart-outline</v-icon>
@@ -30,7 +30,7 @@
       </v-badge>
       <v-btn v-else nuxt to="/cart" icon>
         <v-icon size="20">mdi-cart-outline</v-icon>
-      </v-btn>
+      </v-btn> -->
       <v-divider vertical class="mx-md-5 mx-2" />
       <v-btn @click="toggleTheme" icon>
         <v-icon size="20">mdi-brightness-7</v-icon>
@@ -40,7 +40,17 @@
 </template>
 
 <script>
+import { useCartStore } from "~/store/cart";
+
 export default {
+  async asyncData({ $pinia }) {
+    const store = useCartStore($pinia);
+    console.log(store);
+    return {
+      cart,
+    };
+  },
+
   methods: {
     toggleTheme() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;

@@ -1,12 +1,12 @@
 <template>
   <div>
     <DesktopNav />
-    <HomeCarousel :sale_items="sale_items" />
+    <HomeCarousel :products="$products" />
     <br /><br />
     <v-container>
       <h1 class="text-md-h4 text-h6">Check these out 🔥</h1>
       <br />
-      <ProductSlider :products="products" />
+      <ProductSlider :products="$products" />
       <br /><br /><br />
       <Newsletter />
     </v-container>
@@ -18,18 +18,24 @@
 
 <script>
 export default {
-  async created() {
-    this.sale_items = await this.$content("products")
-      .where({ onSale: true })
-      .fetch();
-    this.products = await this.$content("products").fetch();
-  },
-  data() {
+  async asyncData({ $commerce }) {
+    const { data: products } = await $commerce.products.list();
+    const { data: categories } = await $commerce.categories.list();
+    const cart = await $commerce.cart.retrieve();
+
+    console.log(products);
     return {
-      products: null,
-      sale_items: null,
+      products,
+      categories,
+      cart,
     };
   },
+  // data() {
+  //   return {
+  //     products: null,
+  //     sale_items: null,
+  //   };
+  // },
 };
 </script>
 

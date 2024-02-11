@@ -1,0 +1,7 @@
+{
+  "files.exclude": {
+    "**/.output/**": true,
+    "**/.nuxt/**": true,
+    "**/.firebase/**": true
+  }
+}

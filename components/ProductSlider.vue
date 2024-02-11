@@ -1,6 +1,6 @@
 <template>
   <v-slide-group>
-    <v-slide-item v-for="(p, i) in products" :key="`hotProduct-${i}`">
+    <v-slide-group-item v-for="(p, i) in products">
       <v-card
         nuxt
         :to="`/products/${p.id}`"
@@ -24,7 +24,7 @@
           p.name
         }}</v-card-title>
         <v-card-subtitle class="primary--text pb-3">
-          ${{ p.price }}
+          {{ p.price.formatted_with_symbol }}
         </v-card-subtitle>
         <v-card-text>
           <v-chip
@@ -39,7 +39,7 @@
           </v-chip>
         </v-card-text>
       </v-card>
-    </v-slide-item>
+    </v-slide-group-item>
   </v-slide-group>
 </template>
 

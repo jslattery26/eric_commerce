@@ -36,8 +36,11 @@
         </v-col>
         <v-col md="9">
           <v-row>
-            <template v-for="(p, i) in filteredProducts">
-              <v-fade-transition :key="`product${p.id}-${i}`">
+            <template
+              v-for="(p, i) in filteredProducts"
+              :key="`product${p.id}-${i}`"
+            >
+              <v-fade-transition>
                 <v-col cols="12" md="6">
                   <v-card
                     nuxt
@@ -92,7 +95,12 @@
     <ScrollTop />
   </div>
 </template>
-
+<script setup>
+const { $commerce } = useNuxtApp();
+const { data: products } = await $commerce.products.list();
+const { data: categories } = await $commerce.categories.list();
+const cart = await $commerce.cart.retrieve();
+</script>
 <script>
 export default {
   async asyncData({ $commerce }) {

@@ -21,8 +21,8 @@
         >
       </div>
       <v-row>
-        <template v-for="(c, i) in cart.line_items">
-          <v-col :key="`cartItem${i}`">
+        <template v-for="(c, i) in cart.line_items" :key="`cartItem${i}`">
+          <v-col>
             <v-card color="surface" flat>
               <v-btn @click="removeItem(c)" absolute top right icon>
                 <v-icon size="18">mdi-delete</v-icon>
